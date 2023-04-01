@@ -7,21 +7,22 @@ Created on Sat Apr  1 16:26:23 2023
 
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
 import numpy as np
 from prophet import Prophet
 from prophet.diagnostics import performance_metrics
 from prophet.diagnostics import cross_validation
 from prophet.plot import plot_cross_validation_metric
 import base64
-
+from datetime import datetime, timedelta
 st.title('Time Series Forecasting')
 
 """
 This data app uses Facebook's open-source Prophet library to automatically generate future forecast values from an imported dataset.
 You'll be able to import your data from a CSV file, visualize trends and features, analyze forecast performance, and finally download the created forecast 😵 
 **In beta mode**
-Created by Zach Renwick: https://twitter.com/zachrenwick
-Code available here: https://github.com/zachrenwick/streamlit_forecasting_app
+Created by : sidha 
+Code available here: github/sidhathrimurthulu@69
 """
 
 """
@@ -49,18 +50,19 @@ df = st.file_uploader(r'C:\Users\sidda\tonne.csv')
 
 st.info(
             f"""
-                👆 Upload a .csv file first. Sample to try: [peyton_manning_wiki_ts.csv](https://raw.githubusercontent.com/zachrenwick/streamlit_forecasting_app/master/example_data/example_wp_log_peyton_manning.csv)
+                👆 Upload a .csv file first. Sample to try: [tonne.csv](https://raw.githubusercontent.com/zachrenwick/streamlit_forecasting_app/master/example_data/example_wp_log_peyton_manning.csv)
                 """
         )
 
 if df is not None:
     data = pd.read_csv(df)
+    data.columns = ['ds','y']
     data['ds'] = pd.to_datetime(data['ds'],errors='coerce') 
     data['y']= pd.DataFrame(data['y'].interpolate(method='linear'))
     st.write(data)
     
     max_date = data['ds'].max()
-    #st.write(max_date)
+    st.write(max_date)
 
 """
 ### Step 2: Select Forecast Horizon
@@ -91,6 +93,10 @@ if df is not None:
     The next visual shows the actual (black dots) and predicted (blue line) values over time.
     """
     fig1 = m.plot(forecast)
+    datenow = datetime(2023, 2, 28)
+    dateend = datenow + timedelta(days=365)
+    datestart = datenow
+    plt.xlim([datestart, dateend])
     st.write(fig1)
 
     """
@@ -98,7 +104,7 @@ if df is not None:
     """
     fig2 = m.plot_components(forecast)
     st.write(fig2)
-
+   
 if df is not None:
     csv_exp = fcst_filtered.to_csv(index=False)
     # When no file name is given, pandas returns the CSV as a string, nice.
