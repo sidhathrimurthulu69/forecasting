@@ -1,4 +1,4 @@
-Flask==1.1.1
+
 gunicorn==19.9.0
 itsdangerous==1.1.0
 Jinja2==2.10.1
@@ -11,3 +11,13 @@ matplotlib>=1.4.3
 pandas>=0.19
 flasgger==0.9.4
 streamlit
+fbprophet==0.7.1
+plotly==5.7.0
+streamlit==1.2.0
+yfinance==0.1.67
+pip==23.0.1
+
+
+pystan==2.19.1.1
+
+datetime
